@@ -35,6 +35,7 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
   const [activeTab, setActiveTab] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'HIDDEN'>('ALL');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'rating'>('newest');
   const [vouchToDelete, setVouchToDelete] = useState<Vouch | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleUpdateStatus = async (vouchId: string, newStatus: string) => {
     // Optimistic UI update
@@ -181,7 +182,7 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
                       src={vouch.proofImage}
                       alt="Proof screenshot"
                       className="w-32 h-20 object-cover rounded-xl border border-gray-200 cursor-pointer hover:opacity-90 transition"
-                      onClick={() => window.open(vouch.proofImage!, '_blank')}
+                      onClick={() => setPreviewImage(vouch.proofImage!)}
                     />
                   </div>
                 )}
@@ -238,20 +239,18 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
 
       {/* Delete Confirmation Modal */}
       {vouchToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center animate-pop border-2 border-rose-100">
-            <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-3xl shrink-0">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center shadow-xl border border-gray-100 animate-pop">
+            <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 text-xl font-bold">
               🗑️
             </div>
-
-            <div>
-              <h3 className="text-xl font-extrabold text-gray-900">Apakah Anda Yakin?</h3>
-              <p className="text-xs text-gray-500 font-semibold mt-2 leading-relaxed">
-                Vouch dari <strong className="text-gray-900">{vouchToDelete.isAnonymous ? 'Anonymous' : vouchToDelete.authorName}</strong> akan dihapus permanen dan tidak dapat dikembalikan.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3 pt-2">
+            <h3 className="text-lg font-extrabold text-gray-900">
+              Hapus Vouch Ini?
+            </h3>
+            <p className="text-xs text-gray-500 mt-1 mb-5">
+              Apakah Anda yakin ingin menghapus vouch ini secara permanen? Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setVouchToDelete(null)}
@@ -273,6 +272,41 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
           </div>
         </div>
       )}
+
+      {/* Preview Image Modal Popup */}
+      <AnimatePresence>
+        {previewImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPreviewImage(null)}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-8 cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl bg-black/40 border border-white/20 flex flex-col items-center justify-center cursor-default"
+            >
+              <button
+                type="button"
+                onClick={() => setPreviewImage(null)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white font-extrabold text-lg flex items-center justify-center transition border border-white/20 shadow-md active:scale-95"
+              >
+                ✕
+              </button>
+              <img
+                src={previewImage}
+                alt="Media proof full preview"
+                className="w-full h-full max-h-[85vh] object-contain rounded-2xl"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

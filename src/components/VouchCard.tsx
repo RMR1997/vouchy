@@ -71,6 +71,7 @@ export const VouchCard: React.FC<VouchCardProps> = ({
   const [counts, setCounts] = useState<Record<string, number>>(initialCounts);
   const [floatingEmojis, setFloatingEmojis] = useState<{ id: number; type: string }[]>([]);
   const [formattedDate, setFormattedDate] = useState<string>('');
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   useEffect(() => {
     setFormattedDate(formatDate(createdAt));
@@ -159,10 +160,13 @@ export const VouchCard: React.FC<VouchCardProps> = ({
             <img
               src={proofImage}
               alt="Vouch screenshot proof"
-              className="w-full max-h-52 object-cover rounded-2xl cursor-pointer hover:scale-102 transition-transform duration-200"
-              onClick={() => window.open(proofImage, '_blank')}
+              className="w-full max-h-52 object-cover rounded-2xl cursor-pointer hover:scale-[1.01] transition-transform duration-200"
+              onClick={() => setIsImageModalOpen(true)}
             />
-            <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full pointer-events-none flex items-center gap-1 shadow-sm">
+            <div
+              onClick={() => setIsImageModalOpen(true)}
+              className="absolute bottom-2 right-2 bg-black/70 hover:bg-black/80 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full cursor-pointer flex items-center gap-1 shadow-sm transition active:scale-95"
+            >
               <span>🔍 Klik untuk perbesar</span>
             </div>
           </div>
@@ -218,6 +222,51 @@ export const VouchCard: React.FC<VouchCardProps> = ({
           })}
         </div>
       </div>
+
+      {/* Image Preview Modal Popup */}
+      <AnimatePresence>
+        {isImageModalOpen && proofImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsImageModalOpen(false)}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-8 cursor-zoom-out"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl bg-black/40 border border-white/20 flex flex-col items-center justify-center cursor-default"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setIsImageModalOpen(false)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white font-extrabold text-lg flex items-center justify-center transition backdrop-blur-xs border border-white/20 shadow-md active:scale-95"
+              >
+                ✕
+              </button>
+
+              {/* Full Image */}
+              <img
+                src={proofImage}
+                alt="Screenshot proof full preview"
+                className="w-full h-full max-h-[85vh] object-contain rounded-2xl"
+              />
+
+              {/* Footer info badge */}
+              <div className="absolute bottom-4 left-4 right-4 text-center pointer-events-none">
+                <span className="inline-block bg-black/60 backdrop-blur-md text-white/90 text-xs font-bold px-4 py-1.5 rounded-full border border-white/10 shadow-sm">
+                  Media Bukti dari {isAnonymous ? 'Anonymous' : authorName} 📸
+                </span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
