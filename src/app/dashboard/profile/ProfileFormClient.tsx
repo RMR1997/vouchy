@@ -16,6 +16,7 @@ interface UserProps {
   bio: string | null;
   location: string | null;
   jobTitle: string | null;
+  wallTitle?: string | null;
   avatar: string | null;
   socialLinks: SocialLink[];
 }
@@ -30,6 +31,7 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
   const [bio, setBio] = useState(initialUser.bio || '');
   const [location, setLocation] = useState(initialUser.location || '');
   const [jobTitle, setJobTitle] = useState(initialUser.jobTitle || '');
+  const [wallTitle, setWallTitle] = useState(initialUser.wallTitle || '');
   const [avatar, setAvatar] = useState(initialUser.avatar || '');
 
   // Social Links state
@@ -69,6 +71,7 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
           bio,
           location,
           jobTitle,
+          wallTitle,
           avatar,
           socialLinks,
         }),
@@ -299,6 +302,22 @@ function compressImage(file: File, maxWidth = 400, maxHeight = 400, quality = 0.
           onChange={(e) => setBio(e.target.value)}
           className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-vouchy-purple-500 focus:ring-2 focus:ring-vouchy-purple-200 outline-none transition font-medium text-sm resize-none"
         />
+      </div>
+
+      <div>
+        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+          Judul Public Wall 💬 <span className="text-gray-400 font-normal lowercase">(opsional)</span>
+        </label>
+        <input
+          type="text"
+          placeholder={`Default: What people say about ${name || 'you'} 💬`}
+          value={wallTitle}
+          onChange={(e) => setWallTitle(e.target.value)}
+          className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-vouchy-purple-500 focus:ring-2 focus:ring-vouchy-purple-200 outline-none transition font-medium text-sm"
+        />
+        <p className="text-[11px] text-gray-400 mt-1">
+          Kustomisasi judul header di atas kumpulan kartu vouch pada halaman profil publik Anda.
+        </p>
       </div>
 
       {/* Social Links Section */}

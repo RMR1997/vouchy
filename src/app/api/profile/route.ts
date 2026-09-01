@@ -12,7 +12,7 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json();
-    const { name, bio, location, jobTitle, avatar, socialLinks, settings } = body;
+    const { name, bio, location, jobTitle, wallTitle, avatar, socialLinks, settings } = body;
 
     // Update user info
     const updatedUser = await db.user.update({
@@ -22,6 +22,7 @@ export async function PUT(request: Request) {
         bio: bio !== undefined ? bio : user.bio,
         location: location !== undefined ? location : user.location,
         jobTitle: jobTitle !== undefined ? jobTitle : user.jobTitle,
+        wallTitle: wallTitle !== undefined ? wallTitle : user.wallTitle,
         avatar: avatar !== undefined ? avatar : user.avatar,
       },
     });

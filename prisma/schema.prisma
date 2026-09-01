@@ -18,6 +18,7 @@ model User {
   bio          String?
   location     String?
   jobTitle     String?
+  wallTitle    String?
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   socialLinks  SocialLink[]

@@ -29,6 +29,7 @@ interface Vouch {
 interface ProfileWallClientProps {
   profileId: string;
   profileName: string;
+  wallTitle?: string | null;
   initialVouches: Vouch[];
   layout?: string;
 }
@@ -36,6 +37,7 @@ interface ProfileWallClientProps {
 export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
   profileId,
   profileName,
+  wallTitle,
   initialVouches,
   layout = 'masonry',
 }) => {
@@ -77,8 +79,8 @@ export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
       {/* Wall Header Title & Sort Controls */}
       <div className="flex items-center justify-between mb-8 gap-4 flex-wrap border-b border-black/5 pb-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 flex items-center gap-2">
-            What people say about {profileName} 💬
+          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 flex items-center gap-2 break-words">
+            {wallTitle || `What people say about ${profileName} 💬`}
           </h2>
           <p className="text-xs font-bold text-gray-500 mt-1">
             {vouches.length} {vouches.length === 1 ? 'Vouch' : 'Vouches'} on this wall

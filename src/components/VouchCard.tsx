@@ -154,20 +154,20 @@ export const VouchCard: React.FC<VouchCardProps> = ({
           "{message}"
         </p>
 
-        {/* Screenshot Proof Attachment */}
+        {/* Screenshot Proof Attachment (Compact Space-Saving Thumbnail) */}
         {proofImage && (
-          <div className="mt-3 rounded-2xl overflow-hidden border border-black/10 shadow-xs bg-black/5 relative group/proof">
+          <div className="mt-2.5 rounded-xl overflow-hidden border border-black/10 shadow-xs bg-black/5 relative group/proof max-h-28">
             <img
               src={proofImage}
               alt="Vouch screenshot proof"
-              className="w-full max-h-52 object-cover rounded-2xl cursor-pointer hover:scale-[1.01] transition-transform duration-200"
+              className="w-full h-24 sm:h-28 object-cover rounded-xl cursor-pointer hover:opacity-95 transition duration-200"
               onClick={() => setIsImageModalOpen(true)}
             />
             <div
               onClick={() => setIsImageModalOpen(true)}
-              className="absolute bottom-2 right-2 bg-black/70 hover:bg-black/80 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full cursor-pointer flex items-center gap-1 shadow-sm transition active:scale-95"
+              className="absolute bottom-1.5 right-1.5 bg-black/70 hover:bg-black/85 backdrop-blur-xs text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full cursor-pointer flex items-center gap-1 shadow-sm transition active:scale-95"
             >
-              <span>🔍 Klik untuk perbesar</span>
+              <span>🔍 Zoom</span>
             </div>
           </div>
         )}
