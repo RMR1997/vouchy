@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PatternBackground } from '@/components/PatternBackground';
 import { VouchCard } from '@/components/VouchCard';
-import { getCardColorStyles } from '@/lib/utils';
+import { getCardColorDetails } from '@/lib/utils';
 import { Check, Sparkles, LayoutGrid, Layers, Columns, Star } from 'lucide-react';
 
 interface Settings {
