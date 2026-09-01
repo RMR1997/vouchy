@@ -1,0 +1,67 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String           @id @default(uuid())
+  email        String           @unique
+  username     String           @unique
+  passwordHash String
+  name         String
+  avatar       String?
+  bio          String?
+  location     String?
+  jobTitle     String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  socialLinks  SocialLink[]
+  vouches      Vouch[]          @relation("ProfileVouches")
+  settings     ProfileSettings?
+}
+
+model SocialLink {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform String // linkedin, github, instagram, website, twitter
+  url      String
+}
+
+model Vouch {
+  id           String     @id @default(uuid())
+  profileId    String
+  profile      User       @relation("ProfileVouches", fields: [profileId], references: [id], onDelete: Cascade)
+  authorName   String
+  authorAvatar String?
+  message      String
+  rating       Int        @default(5)
+  relationship String     @default("Friend") // Friend, Coworker, Client, Classmate, Family, Other
+  isAnonymous  Boolean    @default(false)
+  status       String     @default("APPROVED") // PENDING, APPROVED, HIDDEN
+  createdAt    DateTime   @default(now())
+  approvedAt   DateTime?
+  reactions    Reaction[]
+}
+
+model Reaction {
+  id        String   @id @default(uuid())
+  vouchId   String
+  vouch     Vouch    @relation(fields: [vouchId], references: [id], onDelete: Cascade)
+  type      String   // HEART (❤️), LAUGH (😂), ROCKET (🚀), PURPLE_HEART (💜), CLAP (👏)
+  createdAt DateTime @default(now())
+}
+
+model ProfileSettings {
+  id         String @id @default(uuid())
+  userId     String @unique
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme      String @default("lavender") // lavender, sunshine, mint, sky, bubblegum, cream
+  layout     String @default("masonry") // cozy, masonry, clean
+  background String @default("pattern") // solid, gradient, pattern
+  pattern    String @default("dots") // dots, stars, hearts, squiggles, clouds
+}

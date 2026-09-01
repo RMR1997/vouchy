@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', 'Nunito', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #FAF8F5;
+  color: #1E1B2E;
+  overflow-x: hidden;
+}
+
+/* Playful SVG background patterns */
+.bg-pattern-dots {
+  background-image: radial-gradient(#DDD6FE 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.bg-pattern-stars {
+  background-image: radial-gradient(#FDE047 2px, transparent 2px), radial-gradient(#BAE6FD 1.5px, transparent 1.5px);
+  background-position: 0 0, 12px 12px;
+  background-size: 32px 32px;
+}
+
+.bg-pattern-hearts {
+  background-image: radial-gradient(#FBCFE8 2px, transparent 2px);
+  background-size: 28px 28px;
+}
+
+.bg-pattern-squiggles {
+  background-image: radial-gradient(#A7F3D0 2px, transparent 2px);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-clouds {
+  background-image: radial-gradient(#E0F2FE 2.5px, transparent 2.5px);
+  background-size: 36px 36px;
+}
+
+/* Custom playful scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4B5FD;
+  border-radius: 9999px;
+  border: 2px solid #FAF8F5;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A78BFA;
+}

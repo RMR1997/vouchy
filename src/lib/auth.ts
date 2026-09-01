@@ -1,0 +1,46 @@
+import { cookies } from 'next/headers';
+import { db } from './db';
+import bcrypt from 'bcryptjs';
+
+const SESSION_COOKIE = 'vouchy_user_id';
+
+export async function getCurrentUser() {
+  const cookieStore = cookies();
+  const userId = cookieStore.get(SESSION_COOKIE)?.value;
+
+  if (!userId) {
+    return null;
+  }
+
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    include: {
+      socialLinks: true,
+      settings: true,
+    },
+  });
+
+  return user;
+}
+
+export async function setSessionUser(userId: string) {
+  const cookieStore = cookies();
+  cookieStore.set(SESSION_COOKIE, userId, {
+    httpOnly: true,
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30, // 30 days
+  });
+}
+
+export async function clearSessionUser() {
+  const cookieStore = cookies();
+  cookieStore.delete(SESSION_COOKIE);
+}
+
+export async function verifyPassword(plain: string, hash: string) {
+  return bcrypt.compare(plain, hash);
+}
+
+export async function hashPassword(plain: string) {
+  return bcrypt.hash(plain, 10);
+}
