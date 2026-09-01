@@ -32,6 +32,7 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
   const [vouches, setVouches] = useState<Vouch[]>(initialVouches);
   const [activeTab, setActiveTab] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'HIDDEN'>('ALL');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'rating'>('newest');
+  const [vouchToDelete, setVouchToDelete] = useState<Vouch | null>(null);
 
   const handleUpdateStatus = async (vouchId: string, newStatus: string) => {
     // Optimistic UI update
@@ -201,7 +202,7 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
                 )}
 
                 <button
-                  onClick={() => handleUpdateStatus(vouch.id, 'DELETED')}
+                  onClick={() => setVouchToDelete(vouch)}
                   className="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-extrabold text-xs border border-rose-200 transition flex items-center gap-1"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -217,6 +218,44 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
           <p className="text-base font-bold text-gray-800">
             No vouches found in {activeTab.toLowerCase()} category.
           </p>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {vouchToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 text-center animate-pop border-2 border-rose-100">
+            <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-3xl shrink-0">
+              🗑️
+            </div>
+
+            <div>
+              <h3 className="text-xl font-extrabold text-gray-900">Apakah Anda Yakin?</h3>
+              <p className="text-xs text-gray-500 font-semibold mt-2 leading-relaxed">
+                Vouch dari <strong className="text-gray-900">{vouchToDelete.isAnonymous ? 'Anonymous' : vouchToDelete.authorName}</strong> akan dihapus permanen dan tidak dapat dikembalikan.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setVouchToDelete(null)}
+                className="flex-1 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs transition"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleUpdateStatus(vouchToDelete.id, 'DELETED');
+                  setVouchToDelete(null);
+                }}
+                className="flex-1 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-md shadow-rose-200 transition"
+              >
+                Ya, Hapus 🗑️
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
