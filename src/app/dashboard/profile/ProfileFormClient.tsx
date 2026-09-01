@@ -94,6 +94,47 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
     }
   };
 
+function compressImage(file: File, maxWidth = 400, maxHeight = 400, quality = 0.82): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        } else {
+          resolve(event.target?.result as string);
+        }
+      };
+      img.onerror = (err) => reject(err);
+      img.src = event.target?.result as string;
+    };
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(file);
+  });
+}
+
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
@@ -103,26 +144,15 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
 
     setUploading(true);
     setUploadSuccess(false);
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok && data.url) {
-        setAvatar(data.url);
-        setUploadSuccess(true);
-        setTimeout(() => setUploadSuccess(false), 4000);
-      } else {
-        alert(data.error || 'Failed to upload image');
-      }
+      const compressedBase64 = await compressImage(file);
+      setAvatar(compressedBase64);
+      setUploadSuccess(true);
+      setTimeout(() => setUploadSuccess(false), 4000);
     } catch (err) {
       console.error('Upload failed:', err);
-      alert('Upload failed. Please try again.');
+      alert('Failed to process image. Please select a valid photo.');
     } finally {
       setUploading(false);
     }
