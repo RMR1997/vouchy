@@ -16,7 +16,6 @@ function createPrismaClient() {
         authToken: tursoAuthToken,
       });
 
-      // Custom Lightweight LibSQL Driver Adapter for Prisma v5 Serverless
       const driverAdapter: any = {
         provider: 'sqlite',
         adapterName: '@prisma/adapter-libsql',
@@ -27,18 +26,30 @@ function createPrismaClient() {
               res.columns.map((c: string) => {
                 const val = r[c];
                 if (val === null || val === undefined) return null;
-                return val;
+                if (c === 'isAnonymous') return Boolean(val);
+                if (typeof val === 'number') return val;
+                if (typeof val === 'boolean') return val;
+                if (['createdAt', 'updatedAt', 'approvedAt'].includes(c) && typeof val === 'string') {
+                  return new Date(val.includes('T') ? val : val.replace(' ', 'T') + 'Z').toISOString();
+                }
+                return String(val);
               })
             );
             return {
               ok: true,
               value: {
                 columnNames: res.columns,
-                columnTypes: res.columns.map(() => 'Text'),
+                columnTypes: res.columns.map((c: string) => {
+                  if (['rating', 'count'].includes(c.toLowerCase())) return 0; // Int32
+                  if (c === 'isAnonymous') return 5; // Boolean
+                  if (['createdAt', 'updatedAt', 'approvedAt'].includes(c)) return 10; // DateTime
+                  return 7; // Text
+                }),
                 rows,
               },
             };
           } catch (err: any) {
+            console.error('LibSQL Query Error:', err);
             return { ok: false, error: { kind: 'GenericJs', id: 0 } };
           }
         },
@@ -47,6 +58,7 @@ function createPrismaClient() {
             const res = await client.execute({ sql: query.sql, args: query.args || [] });
             return { ok: true, value: res.rowsAffected };
           } catch (err: any) {
+            console.error('LibSQL Execute Error:', err);
             return { ok: false, error: { kind: 'GenericJs', id: 0 } };
           }
         },
@@ -57,7 +69,7 @@ function createPrismaClient() {
 
       return new PrismaClient({ adapter: driverAdapter });
     } catch (err) {
-      console.error('Failed to initialize Turso LibSQL adapter, falling back to SQLite:', err);
+      console.error('Failed to initialize Turso LibSQL adapter:', err);
     }
   }
 
