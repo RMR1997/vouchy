@@ -21,7 +21,11 @@ function createPrismaClient() {
         adapterName: '@prisma/adapter-libsql',
         async queryRaw(query: { sql: string; args: any[] }) {
           try {
-            const res = await client.execute({ sql: query.sql, args: query.args || [] });
+            const args = (query.args || []).map((a) => {
+              if (a && typeof a === 'object' && 'value' in a) return a.value;
+              return a;
+            });
+            const res = await client.execute({ sql: query.sql, args });
             const rows = res.rows.map((r: any) =>
               res.columns.map((c: string) => {
                 const val = r[c];
@@ -55,7 +59,11 @@ function createPrismaClient() {
         },
         async executeRaw(query: { sql: string; args: any[] }) {
           try {
-            const res = await client.execute({ sql: query.sql, args: query.args || [] });
+            const args = (query.args || []).map((a) => {
+              if (a && typeof a === 'object' && 'value' in a) return a.value;
+              return a;
+            });
+            const res = await client.execute({ sql: query.sql, args });
             return { ok: true, value: res.rowsAffected };
           } catch (err: any) {
             console.error('LibSQL Execute Error:', err);
