@@ -43,11 +43,13 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
 
   const [saving, setSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setSavedSuccess(false);
+    setSaveError(null);
 
     const socialLinks = [
       { platform: 'linkedin', url: linkedin },
@@ -72,13 +74,21 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
         }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.success) {
         setSavedSuccess(true);
+        setSaveError(null);
         router.refresh();
-        setTimeout(() => setSavedSuccess(false), 3000);
+        setTimeout(() => setSavedSuccess(false), 5000);
+      } else {
+        setSaveError(data.error || 'Failed to save profile changes');
+        setTimeout(() => setSaveError(null), 5000);
       }
     } catch (err) {
       console.error('Failed to save profile:', err);
+      setSaveError('Network error. Failed to save profile.');
+      setTimeout(() => setSaveError(null), 5000);
     } finally {
       setSaving(false);
     }
@@ -119,13 +129,36 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-vouchy-purple-100 shadow-sm space-y-6">
+    <>
+      {/* Floating Toast Notification (Top-Right) */}
       {savedSuccess && (
-        <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-center gap-2 text-emerald-800 text-sm font-bold">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+        <div className="fixed top-5 right-5 z-50 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl font-extrabold text-sm flex items-center gap-3 animate-bounce">
+          <CheckCircle2 className="w-5 h-5 text-white shrink-0" />
           <span>Profile changes saved successfully! ✨</span>
         </div>
       )}
+
+      {saveError && (
+        <div className="fixed top-5 right-5 z-50 bg-rose-600 text-white px-6 py-4 rounded-2xl shadow-2xl font-extrabold text-sm flex items-center gap-3 animate-bounce">
+          <span className="text-lg">❌</span>
+          <span>{saveError}</span>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-vouchy-purple-100 shadow-sm space-y-6">
+        {savedSuccess && (
+          <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-center gap-2 text-emerald-800 text-sm font-bold">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+            <span>Profile changes saved successfully! ✨</span>
+          </div>
+        )}
+
+        {saveError && (
+          <div className="bg-rose-50 border border-rose-200 p-4 rounded-2xl flex items-center gap-2 text-rose-800 text-sm font-bold">
+            <span className="text-lg">❌</span>
+            <span>{saveError}</span>
+          </div>
+        )}
 
       {uploadSuccess && (
         <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex items-center gap-2 text-emerald-800 text-sm font-bold animate-pop">
@@ -322,14 +355,29 @@ export const ProfileFormClient: React.FC<ProfileFormClientProps> = ({ initialUse
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="px-8 py-3.5 rounded-2xl bg-vouchy-purple-600 hover:bg-vouchy-purple-700 text-white font-extrabold text-sm shadow-md shadow-vouchy-purple-200 transition active:scale-95 disabled:opacity-50 flex items-center gap-2"
-      >
-        <Save className="w-4 h-4" />
-        <span>{saving ? 'Saving Changes...' : 'Save Profile Settings ✨'}</span>
-      </button>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <button
+          type="submit"
+          disabled={saving}
+          className="px-8 py-3.5 rounded-2xl bg-vouchy-purple-600 hover:bg-vouchy-purple-700 text-white font-extrabold text-sm shadow-md shadow-vouchy-purple-200 transition active:scale-95 disabled:opacity-50 flex items-center gap-2"
+        >
+          <Save className="w-4 h-4" />
+          <span>{saving ? 'Saving Changes...' : 'Save Profile Settings ✨'}</span>
+        </button>
+
+        {savedSuccess && (
+          <span className="text-emerald-600 text-xs font-extrabold flex items-center gap-1 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+            <CheckCircle2 className="w-4 h-4" /> Changes saved successfully! ✨
+          </span>
+        )}
+
+        {saveError && (
+          <span className="text-rose-600 text-xs font-extrabold flex items-center gap-1 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-200">
+            ❌ {saveError}
+          </span>
+        )}
+      </div>
     </form>
-  );
+  </>
+);
 };
