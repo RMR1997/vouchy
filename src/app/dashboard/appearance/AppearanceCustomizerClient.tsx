@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PatternBackground } from '@/components/PatternBackground';
 import { VouchCard } from '@/components/VouchCard';
-import { Check, Sparkles, LayoutGrid, Layers, Columns } from 'lucide-react';
+import { getCardColorStyles } from '@/lib/utils';
+import { Check, Sparkles, LayoutGrid, Layers, Columns, Star } from 'lucide-react';
 
 interface Settings {
   theme: string;
+  cardColor?: string;
   layout: string;
   background: string;
   pattern: string;
@@ -25,6 +27,17 @@ const THEMES = [
   { id: 'sky', label: 'Sky ☁️', color: 'bg-sky-200 border-sky-400' },
   { id: 'bubblegum', label: 'Bubblegum 🎀', color: 'bg-pink-200 border-pink-400' },
   { id: 'cream', label: 'Cream 🍦', color: 'bg-amber-100 border-amber-300' },
+];
+
+const CARD_COLORS = [
+  { id: 'pink', label: 'Pink 🎀', color: 'bg-pink-100 border-pink-400 text-pink-900' },
+  { id: 'rose', label: 'Rose 🌸', color: 'bg-rose-100 border-rose-400 text-rose-900' },
+  { id: 'white', label: 'White Standard 🤍', color: 'bg-white border-gray-300 text-gray-900' },
+  { id: 'purple', label: 'Lavender 💜', color: 'bg-purple-100 border-purple-400 text-purple-900' },
+  { id: 'sky', label: 'Sky Blue ☁️', color: 'bg-sky-100 border-sky-400 text-sky-900' },
+  { id: 'mint', label: 'Mint Green 🌿', color: 'bg-emerald-100 border-emerald-400 text-emerald-900' },
+  { id: 'amber', label: 'Sunshine ☀️', color: 'bg-amber-100 border-amber-400 text-amber-900' },
+  { id: 'dark', label: 'Dark Chic 🖤', color: 'bg-gray-900 border-gray-700 text-white' },
 ];
 
 const LAYOUTS = [
@@ -53,6 +66,7 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
 }) => {
   const router = useRouter();
   const [theme, setTheme] = useState(initialSettings.theme || 'lavender');
+  const [cardColor, setCardColor] = useState(initialSettings.cardColor || 'white');
   const [layout, setLayout] = useState(initialSettings.layout || 'masonry');
   const [background, setBackground] = useState(initialSettings.background || 'pattern');
   const [pattern, setPattern] = useState(initialSettings.pattern || 'dots');
@@ -69,7 +83,7 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          settings: { theme, layout, background, pattern },
+          settings: { theme, cardColor, layout, background, pattern },
         }),
       });
 
@@ -85,6 +99,8 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
     }
   };
 
+  const previewCardStyles = getCardColorStyles(cardColor);
+
   return (
     <div className="space-y-8">
       {saveMessage && (
@@ -96,6 +112,35 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
 
       {/* Control Options */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-vouchy-purple-100 shadow-sm space-y-6">
+        {/* Profile Card Color Picker */}
+        <div>
+          <label className="block text-xs font-black text-gray-800 uppercase tracking-wider mb-1">
+            Warna Kotak Profile Public Wall 📦✨
+          </label>
+          <p className="text-xs text-gray-500 font-semibold mb-3">
+            Pilih warna latar belakang kartu profil utama Anda di halaman publik (termasuk opsi Pink 🎀):
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {CARD_COLORS.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setCardColor(c.id)}
+                className={`p-3.5 rounded-2xl border-2 font-extrabold text-xs flex items-center justify-between transition ${
+                  c.color
+                } ${
+                  cardColor === c.id
+                    ? 'ring-4 ring-vouchy-purple-500 scale-105 shadow-md border-vouchy-purple-600'
+                    : 'opacity-85 hover:opacity-100'
+                }`}
+              >
+                <span>{c.label}</span>
+                {cardColor === c.id && <Check className="w-4 h-4 text-vouchy-purple-700 shrink-0 ml-1" />}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Theme Picker */}
         <div>
           <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-3">
@@ -221,17 +266,37 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
       {/* Live Real-time Profile Wall Preview */}
       <div className="border-2 border-vouchy-purple-200 rounded-4xl overflow-hidden shadow-playful-lg">
         <div className="bg-white px-6 py-3 border-b border-gray-200 flex items-center justify-between text-xs font-extrabold text-gray-500">
-          <span>Live Wall Preview</span>
+          <span>Live Wall & Profile Card Preview</span>
           <span className="text-vouchy-purple-600">vouchy.app/{user.username}</span>
         </div>
 
-        <PatternBackground theme={theme} background={background} pattern={pattern} className="p-8">
-          <div className="max-w-md mx-auto">
+        <PatternBackground theme={theme} background={background} pattern={pattern} className="p-6 sm:p-8">
+          <div className="max-w-md mx-auto space-y-6">
+            {/* Live Profile Header Card Mockup */}
+            <div className={`p-6 rounded-3xl border-4 shadow-lg text-center flex flex-col items-center gap-3 transition-all duration-300 ${previewCardStyles}`}>
+              <img
+                src={user.avatar || `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${user.username}`}
+                alt={user.name || 'User'}
+                className="w-20 h-20 rounded-full object-cover border-4 border-vouchy-purple-200 shadow-md"
+              />
+              <div>
+                <h3 className="text-xl font-black">{user.name || 'Your Name'}</h3>
+                <p className="text-xs font-bold opacity-75">@{user.username}</p>
+                <div className="flex items-center justify-center gap-1 mt-1 text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 px-3 py-0.5 rounded-full inline-flex">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span>5.0 rating</span>
+                </div>
+              </div>
+              <p className="text-xs font-medium opacity-90 leading-relaxed">
+                {user.bio || 'Hello Guys, Welcome to Vouchy!'}
+              </p>
+            </div>
+
             <VouchCard
               id="preview-card"
               authorName="Sarah Chen"
               authorAvatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80"
-              message="Rajabi's wall looks so vibrant and aesthetic with this live theme! 🚀"
+              message="Your profile card and wall look so aesthetic with this color scheme! 🚀"
               rating={5}
               isAnonymous={false}
               createdAt={new Date()}

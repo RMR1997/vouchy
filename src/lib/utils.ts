@@ -42,3 +42,25 @@ export function formatDate(dateInput: Date | string) {
     year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
   });
 }
+
+export function getCardColorStyles(cardColor?: string) {
+  switch (cardColor) {
+    case 'pink':
+      return 'bg-pink-100/95 border-pink-300 text-pink-950';
+    case 'rose':
+      return 'bg-rose-100/95 border-rose-300 text-rose-950';
+    case 'purple':
+      return 'bg-purple-100/95 border-purple-300 text-purple-950';
+    case 'sky':
+      return 'bg-sky-100/95 border-sky-300 text-sky-950';
+    case 'mint':
+      return 'bg-emerald-100/95 border-emerald-300 text-emerald-950';
+    case 'amber':
+      return 'bg-amber-100/95 border-amber-300 text-amber-950';
+    case 'dark':
+      return 'bg-gray-900/95 border-gray-800 text-white';
+    case 'white':
+    default:
+      return 'bg-white/90 border-black/5 text-gray-900';
+  }
+}

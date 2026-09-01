@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { PatternBackground } from '@/components/PatternBackground';
 import { ProfileWallClient } from './ProfileWallClient';
+import { getCardColorStyles } from '@/lib/utils';
 import { Globe, Linkedin, Github, Instagram, Twitter, MessageCircle, Star, Sparkles, MapPin, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 
@@ -61,15 +62,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       : '5.0';
 
   const theme = user.settings?.theme || 'lavender';
+  const cardColor = user.settings?.cardColor || 'white';
   const background = user.settings?.background || 'pattern';
   const pattern = user.settings?.pattern || 'dots';
   const layout = user.settings?.layout || 'masonry';
+  const cardStyles = getCardColorStyles(cardColor);
 
   return (
     <PatternBackground theme={theme} background={background} pattern={pattern}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         {/* Profile Header Card */}
-        <div className="bg-white/90 backdrop-blur-md rounded-4xl p-6 sm:p-10 border-4 border-black/5 shadow-playful-lg text-center sm:text-left flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 relative overflow-hidden mb-12">
+        <div className={`backdrop-blur-md rounded-4xl p-6 sm:p-10 border-4 shadow-playful-lg text-center sm:text-left flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 relative overflow-hidden mb-12 transition-all duration-300 ${cardStyles}`}>
           {/* Avatar */}
           <div className="relative">
             <img

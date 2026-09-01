@@ -48,6 +48,7 @@ export async function PUT(request: Request) {
         where: { userId: user.id },
         update: {
           theme: settings.theme,
+          cardColor: settings.cardColor,
           layout: settings.layout,
           background: settings.background,
           pattern: settings.pattern,
@@ -55,6 +56,7 @@ export async function PUT(request: Request) {
         create: {
           userId: user.id,
           theme: settings.theme || 'lavender',
+          cardColor: settings.cardColor || 'white',
           layout: settings.layout || 'masonry',
           background: settings.background || 'pattern',
           pattern: settings.pattern || 'dots',

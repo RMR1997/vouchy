@@ -62,6 +62,7 @@ model ProfileSettings {
   userId     String @unique
   user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   theme      String @default("lavender") // lavender, sunshine, mint, sky, bubblegum, cream
+  cardColor  String @default("white") // white, pink, rose, purple, sky, mint, amber, dark
   layout     String @default("masonry") // cozy, masonry, clean
   background String @default("pattern") // solid, gradient, pattern
   pattern    String @default("dots") // dots, stars, hearts, squiggles, clouds
