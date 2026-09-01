@@ -32,6 +32,7 @@ const PRESET_AVATARS = [
 ];
 
 const VOUCH_CARD_COLORS = [
+  { id: 'bg-[#FFFFFF] border-[#E5E7EB] text-[#111827]', name: 'White', emoji: '🤍', previewBg: '#FFFFFF', previewBorder: '#E5E7EB' },
   { id: 'bg-[#FDF2F8] border-[#FBCFE8] text-[#831843]', name: 'Pink', emoji: '🎀', previewBg: '#FDF2F8', previewBorder: '#FBCFE8' },
   { id: 'bg-[#FFF1F2] border-[#FECDD3] text-[#881337]', name: 'Rose', emoji: '🌸', previewBg: '#FFF1F2', previewBorder: '#FECDD3' },
   { id: 'bg-[#FAF5FF] border-[#E9D5FF] text-[#581C87]', name: 'Lavender', emoji: '💜', previewBg: '#FAF5FF', previewBorder: '#E9D5FF' },
@@ -44,7 +45,6 @@ const VOUCH_CARD_COLORS = [
   { id: 'bg-[#F7FEE7] border-[#D9F99D] text-[#3F6212]', name: 'Matcha', emoji: '🍵', previewBg: '#F7FEE7', previewBorder: '#D9F99D' },
   { id: 'bg-[#FDF4FF] border-[#F5D0FE] text-[#701A75]', name: 'Plum', emoji: '🍇', previewBg: '#FDF4FF', previewBorder: '#F5D0FE' },
   { id: 'bg-[#FAF8F5] border-[#E5E7EB] text-[#111827]', name: 'Cream', emoji: '🍦', previewBg: '#FAF8F5', previewBorder: '#E5E7EB' },
-  { id: 'bg-[#FFFFFF] border-[#E5E7EB] text-[#111827]', name: 'White', emoji: '🤍', previewBg: '#FFFFFF', previewBorder: '#E5E7EB' },
 ];
 
 export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
