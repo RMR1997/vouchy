@@ -165,7 +165,6 @@ export default async function DashboardOverviewPage() {
                 authorAvatar={vouch.authorAvatar}
                 message={vouch.message}
                 rating={vouch.rating}
-                relationship={vouch.relationship}
                 isAnonymous={vouch.isAnonymous}
                 createdAt={vouch.createdAt}
                 reactions={vouch.reactions}

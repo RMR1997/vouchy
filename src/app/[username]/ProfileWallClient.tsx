@@ -18,7 +18,7 @@ interface Vouch {
   authorAvatar?: string | null;
   message: string;
   rating: number;
-  relationship: string;
+  relationship?: string;
   isAnonymous: boolean;
   createdAt: Date | string;
   reactions?: Reaction[];
@@ -120,7 +120,6 @@ export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
               authorAvatar={vouch.authorAvatar}
               message={vouch.message}
               rating={vouch.rating}
-              relationship={vouch.relationship}
               isAnonymous={vouch.isAnonymous}
               createdAt={vouch.createdAt}
               reactions={vouch.reactions}

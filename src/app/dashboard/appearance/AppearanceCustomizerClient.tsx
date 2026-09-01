@@ -233,7 +233,6 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
               authorAvatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80"
               message="Rajabi's wall looks so vibrant and aesthetic with this live theme! 🚀"
               rating={5}
-              relationship="Friend"
               isAnonymous={false}
               createdAt={new Date()}
               reactions={[{ id: 'r1', type: 'PURPLE_HEART' }, { id: 'r2', type: 'ROCKET' }]}

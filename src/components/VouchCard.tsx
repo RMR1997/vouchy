@@ -16,7 +16,7 @@ interface VouchCardProps {
   authorAvatar?: string | null;
   message: string;
   rating: number;
-  relationship: string;
+  relationship?: string;
   isAnonymous: boolean;
   createdAt: Date | string;
   reactions?: Reaction[];
@@ -121,7 +121,7 @@ export const VouchCard: React.FC<VouchCardProps> = ({
       </AnimatePresence>
 
       <div>
-        {/* Top Header: Rating & Relationship badge */}
+        {/* Top Header: Rating */}
         <div className="flex items-center justify-between mb-3 gap-2">
           {/* Star rating */}
           <div className="flex items-center gap-1 bg-white/70 backdrop-blur-sm px-2.5 py-1 rounded-full border border-black/5 text-sm font-semibold">
@@ -136,13 +136,6 @@ export const VouchCard: React.FC<VouchCardProps> = ({
             ))}
             <span className="ml-1 text-xs text-gray-700 font-bold">{rating}.0</span>
           </div>
-
-          {/* Relationship Tag */}
-          {relationship && (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/60 text-gray-700 border border-black/5">
-              {relationship}
-            </span>
-          )}
         </div>
 
         {/* Message body */}

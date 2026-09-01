@@ -15,7 +15,7 @@ interface Vouch {
   authorAvatar?: string | null;
   message: string;
   rating: number;
-  relationship: string;
+  relationship?: string;
   isAnonymous: boolean;
   status: string; // PENDING, APPROVED, HIDDEN
   createdAt: Date | string;
@@ -163,10 +163,6 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                     <span>{vouch.rating}.0</span>
                   </div>
-
-                  <span className="text-xs font-bold text-gray-500 bg-gray-50 px-2.5 py-0.5 rounded-full border border-gray-200">
-                    {vouch.relationship}
-                  </span>
                 </div>
 
                 {/* Vouch Message */}
