@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
-import { createClient } from '@libsql/client';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -12,11 +11,10 @@ function createPrismaClient() {
 
   if (tursoUrl && tursoAuthToken) {
     try {
-      const libsql = createClient({
+      const adapter = new PrismaLibSql({
         url: tursoUrl.startsWith('libsql:') ? tursoUrl.replace('libsql:', 'https:') : tursoUrl,
         authToken: tursoAuthToken,
       });
-      const adapter = new PrismaLibSql(libsql as any);
       return new PrismaClient({ adapter: adapter as any });
     } catch (err) {
       console.error('Failed to initialize Turso LibSQL adapter:', err);

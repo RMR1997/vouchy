@@ -6,6 +6,8 @@ import { ProfileWallClient } from './ProfileWallClient';
 import { Globe, Linkedin, Github, Instagram, Twitter, MessageCircle, Star, Sparkles, MapPin, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 interface ProfilePageProps {
   params: {
     username: string;

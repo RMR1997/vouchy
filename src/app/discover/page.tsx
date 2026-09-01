@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Star, Search, Sparkles } from 'lucide-react';
 import { DiscoverClient } from './DiscoverClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DiscoverPage() {
   const users = await db.user.findMany({
     include: {
