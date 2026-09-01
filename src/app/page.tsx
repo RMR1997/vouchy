@@ -151,15 +151,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            <p className="text-sm text-gray-700 font-medium mb-4">
+            <p className="text-sm text-gray-700 font-medium">
               Technical Consultant • Tech Enthusiast • Always building something 🚀
             </p>
-
-            <div className="bg-vouchy-purple-50 p-4 rounded-2xl border border-vouchy-purple-100 text-center">
-              <span className="text-xs font-extrabold text-vouchy-purple-700 block">
-                ✨ What people say about Rajabi 💬
-              </span>
-            </div>
           </div>
 
           {/* Floating Testimonial Cards around Main Card */}
