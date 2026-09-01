@@ -35,8 +35,8 @@ export async function POST(request: Request) {
     await setSessionUser(user.id);
 
     return NextResponse.json({ success: true, user });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error logging in:', error);
-    return NextResponse.json({ error: 'Failed to log in' }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Failed to log in' }, { status: 500 });
   }
 }
