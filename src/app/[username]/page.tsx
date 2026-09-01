@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { PatternBackground } from '@/components/PatternBackground';
 import { ProfileWallClient } from './ProfileWallClient';
-import { getCardColorStyles } from '@/lib/utils';
+import { getCardColorDetails } from '@/lib/utils';
 import { Globe, Linkedin, Github, Instagram, Twitter, MessageCircle, Star, Sparkles, MapPin, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 
@@ -66,13 +66,16 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const background = user.settings?.background || 'pattern';
   const pattern = user.settings?.pattern || 'dots';
   const layout = user.settings?.layout || 'masonry';
-  const cardStyles = getCardColorStyles(cardColor);
+  const cardDetails = getCardColorDetails(cardColor);
 
   return (
     <PatternBackground theme={theme} background={background} pattern={pattern}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         {/* Profile Header Card */}
-        <div className={`backdrop-blur-md rounded-4xl p-6 sm:p-10 border-4 shadow-playful-lg text-center sm:text-left flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 relative overflow-hidden mb-12 transition-all duration-300 ${cardStyles}`}>
+        <div
+          style={cardDetails.style}
+          className={`backdrop-blur-md rounded-4xl p-6 sm:p-10 border-4 shadow-playful-lg text-center sm:text-left flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 relative overflow-hidden mb-12 transition-all duration-300 ${cardDetails.className}`}
+        >
           {/* Avatar */}
           <div className="relative">
             <img
@@ -92,7 +95,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+                <h1 className={`text-3xl sm:text-4xl font-black tracking-tight ${cardDetails.headingClass}`}>
                   {user.name}
                 </h1>
                 <p className="text-sm font-bold text-vouchy-purple-600 mt-0.5">
@@ -115,7 +118,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             </div>
 
             {/* Bio & Job Title */}
-            <p className="text-base text-gray-800 font-semibold mt-3 max-w-2xl leading-relaxed">
+            <p className={`text-base font-semibold mt-3 max-w-2xl leading-relaxed ${cardDetails.subtextClass}`}>
               {user.bio || 'Welcome to my Vouchy wall! Leave me a vouch below ✨'}
             </p>
 

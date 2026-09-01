@@ -99,7 +99,7 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
     }
   };
 
-  const previewCardStyles = getCardColorStyles(cardColor);
+  const cardDetails = getCardColorDetails(cardColor);
 
   return (
     <div className="space-y-8">
@@ -273,21 +273,24 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
         <PatternBackground theme={theme} background={background} pattern={pattern} className="p-6 sm:p-8">
           <div className="max-w-md mx-auto space-y-6">
             {/* Live Profile Header Card Mockup */}
-            <div className={`p-6 rounded-3xl border-4 shadow-lg text-center flex flex-col items-center gap-3 transition-all duration-300 ${previewCardStyles}`}>
+            <div
+              style={cardDetails.style}
+              className={`p-6 rounded-3xl border-4 shadow-lg text-center flex flex-col items-center gap-3 transition-all duration-300 ${cardDetails.className}`}
+            >
               <img
                 src={user.avatar || `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${user.username}`}
                 alt={user.name || 'User'}
                 className="w-20 h-20 rounded-full object-cover border-4 border-vouchy-purple-200 shadow-md"
               />
               <div>
-                <h3 className="text-xl font-black">{user.name || 'Your Name'}</h3>
-                <p className="text-xs font-bold opacity-75">@{user.username}</p>
+                <h3 className={`text-xl font-black ${cardDetails.headingClass}`}>{user.name || 'Your Name'}</h3>
+                <p className="text-xs font-bold text-vouchy-purple-600 mt-0.5">@{user.username}</p>
                 <div className="flex items-center justify-center gap-1 mt-1 text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 px-3 py-0.5 rounded-full inline-flex">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   <span>5.0 rating</span>
                 </div>
               </div>
-              <p className="text-xs font-medium opacity-90 leading-relaxed">
+              <p className={`text-xs font-medium leading-relaxed ${cardDetails.subtextClass}`}>
                 {user.bio || 'Hello Guys, Welcome to Vouchy!'}
               </p>
             </div>

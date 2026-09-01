@@ -6,6 +6,16 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'bg-pink-100', 'border-pink-300', 'text-pink-950', 'text-pink-900', 'border-pink-400',
+    'bg-rose-100', 'border-rose-300', 'text-rose-950', 'text-rose-900', 'border-rose-400',
+    'bg-purple-100', 'border-purple-300', 'text-purple-950', 'text-purple-900', 'border-purple-400',
+    'bg-sky-100', 'border-sky-300', 'text-sky-950', 'text-sky-900', 'border-sky-400',
+    'bg-emerald-100', 'border-emerald-300', 'text-emerald-950', 'text-emerald-900', 'border-emerald-400',
+    'bg-amber-100', 'border-amber-300', 'text-amber-950', 'text-amber-900', 'border-amber-400',
+    'bg-gray-900', 'border-gray-700', 'text-white', 'text-gray-200',
+    'bg-white', 'border-black/10', 'text-gray-900', 'text-gray-800',
+  ],
   theme: {
     extend: {
       colors: {

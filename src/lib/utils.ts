@@ -43,24 +43,75 @@ export function formatDate(dateInput: Date | string) {
   });
 }
 
-export function getCardColorStyles(cardColor?: string) {
+export interface CardColorStyle {
+  className: string;
+  style: React.CSSProperties;
+  headingClass: string;
+  subtextClass: string;
+}
+
+export function getCardColorDetails(cardColor?: string): CardColorStyle {
   switch (cardColor) {
     case 'pink':
-      return 'bg-pink-100/95 border-pink-300 text-pink-950';
+      return {
+        className: 'bg-pink-100 border-pink-300 text-pink-950',
+        style: { backgroundColor: '#FCE7F3', borderColor: '#F472B6', color: '#500724' },
+        headingClass: 'text-pink-950',
+        subtextClass: 'text-pink-900',
+      };
     case 'rose':
-      return 'bg-rose-100/95 border-rose-300 text-rose-950';
+      return {
+        className: 'bg-rose-100 border-rose-300 text-rose-950',
+        style: { backgroundColor: '#FFE4E6', borderColor: '#FB7185', color: '#4C0519' },
+        headingClass: 'text-rose-950',
+        subtextClass: 'text-rose-900',
+      };
     case 'purple':
-      return 'bg-purple-100/95 border-purple-300 text-purple-950';
+      return {
+        className: 'bg-purple-100 border-purple-300 text-purple-950',
+        style: { backgroundColor: '#F3E8FF', borderColor: '#C084FC', color: '#3B0764' },
+        headingClass: 'text-purple-950',
+        subtextClass: 'text-purple-900',
+      };
     case 'sky':
-      return 'bg-sky-100/95 border-sky-300 text-sky-950';
+      return {
+        className: 'bg-sky-100 border-sky-300 text-sky-950',
+        style: { backgroundColor: '#E0F2FE', borderColor: '#38BDF8', color: '#082F49' },
+        headingClass: 'text-sky-950',
+        subtextClass: 'text-sky-900',
+      };
     case 'mint':
-      return 'bg-emerald-100/95 border-emerald-300 text-emerald-950';
+      return {
+        className: 'bg-emerald-100 border-emerald-300 text-emerald-950',
+        style: { backgroundColor: '#D1FAE5', borderColor: '#34D399', color: '#022C22' },
+        headingClass: 'text-emerald-950',
+        subtextClass: 'text-emerald-900',
+      };
     case 'amber':
-      return 'bg-amber-100/95 border-amber-300 text-amber-950';
+      return {
+        className: 'bg-amber-100 border-amber-300 text-amber-950',
+        style: { backgroundColor: '#FEF3C7', borderColor: '#FBBF24', color: '#451A03' },
+        headingClass: 'text-amber-950',
+        subtextClass: 'text-amber-900',
+      };
     case 'dark':
-      return 'bg-gray-900/95 border-gray-800 text-white';
+      return {
+        className: 'bg-gray-900 border-gray-700 text-white',
+        style: { backgroundColor: '#111827', borderColor: '#374151', color: '#FFFFFF' },
+        headingClass: 'text-white',
+        subtextClass: 'text-gray-200',
+      };
     case 'white':
     default:
-      return 'bg-white/90 border-black/5 text-gray-900';
+      return {
+        className: 'bg-white border-black/10 text-gray-900',
+        style: { backgroundColor: '#FFFFFF', borderColor: 'rgba(0, 0, 0, 0.1)', color: '#111827' },
+        headingClass: 'text-gray-900',
+        subtextClass: 'text-gray-800',
+      };
   }
+}
+
+export function getCardColorStyles(cardColor?: string) {
+  return getCardColorDetails(cardColor).className;
 }
