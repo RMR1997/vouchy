@@ -124,57 +124,6 @@ export default function HomePage() {
           </Link>
         </motion.div>
 
-        {/* Hero Visual Card Stack */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="mt-16 relative max-w-2xl mx-auto"
-        >
-          {/* Main Central Profile Card Mockup */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border-4 border-vouchy-purple-200 shadow-playful-lg text-left relative z-20">
-            <div className="flex items-center gap-4 border-b border-gray-100 pb-4 mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
-                alt="Rajabi Profile Preview"
-                className="w-16 h-16 rounded-full object-cover border-2 border-vouchy-purple-400"
-              />
-              <div>
-                <h3 className="text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                  Rajabi <span className="text-sm">🚀</span>
-                </h3>
-                <p className="text-xs font-bold text-gray-500">@rajabi</p>
-                <div className="flex items-center gap-1 mt-1 text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full inline-flex border border-amber-200">
-                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  <span>4.9 from 24 Vouches</span>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-sm text-gray-700 font-medium">
-              Technical Consultant • Tech Enthusiast • Always building something 🚀
-            </p>
-          </div>
-
-          {/* Floating Testimonial Cards around Main Card */}
-          {HERO_TESTIMONIALS.map((item, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5 + idx * 0.1 }}
-              className={`absolute z-30 hidden sm:block p-4 rounded-2xl border-2 shadow-md max-w-xs ${item.position} ${item.rotation} ${item.bgColor} ${item.textColor}`}
-            >
-              <div className="flex items-center gap-1 mb-1">
-                {Array.from({ length: item.stars }).map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <p className="text-xs font-bold leading-snug">{item.text}</p>
-              <p className="text-[10px] font-extrabold opacity-75 mt-2">— {item.author}</p>
-            </motion.div>
-          ))}
-        </motion.div>
       </section>
 
       {/* ---------------- 2. HOW IT WORKS SECTION ---------------- */}
