@@ -226,23 +226,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                     </div>
                   )}
 
-                  {/* Relationship selector */}
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Relationship
-                    </label>
-                    <select
-                      value={relationship}
-                      onChange={(e) => setRelationship(e.target.value)}
-                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-vouchy-purple-500 focus:ring-2 focus:ring-vouchy-purple-200 outline-none transition font-medium bg-white"
-                    >
-                      {RELATIONSHIPS.map((rel) => (
-                        <option key={rel} value={rel}>
-                          {rel}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+
 
                   {/* Message field */}
                   <div>

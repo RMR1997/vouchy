@@ -31,6 +31,7 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
 }) => {
   const [vouches, setVouches] = useState<Vouch[]>(initialVouches);
   const [activeTab, setActiveTab] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'HIDDEN'>('ALL');
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'rating'>('newest');
 
   const handleUpdateStatus = async (vouchId: string, newStatus: string) => {
     // Optimistic UI update
@@ -61,6 +62,20 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
     return true;
   });
 
+  const sortedFilteredVouches = [...filteredVouches].sort((a, b) => {
+    const timeA = new Date(a.createdAt).getTime();
+    const timeB = new Date(b.createdAt).getTime();
+
+    if (sortBy === 'oldest') {
+      return timeA - timeB;
+    }
+    if (sortBy === 'rating') {
+      return b.rating - a.rating;
+    }
+    // Default newest
+    return timeB - timeA;
+  });
+
   const counts = {
     ALL: vouches.length,
     PENDING: vouches.filter((v) => v.status === 'PENDING').length,
@@ -70,43 +85,59 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Moderation Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-gray-200 pb-3 overflow-x-auto">
-        {(['ALL', 'PENDING', 'APPROVED', 'HIDDEN'] as const).map((tab) => {
-          const isActive = activeTab === tab;
-          const labelMap = {
-            ALL: 'All',
-            PENDING: 'Pending Review',
-            APPROVED: 'Published',
-            HIDDEN: 'Hidden',
-          };
-          return (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shrink-0 ${
-                isActive
-                  ? 'bg-vouchy-purple-600 text-white shadow-xs'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}
-            >
-              <span>{labelMap[tab]}</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-[10px] ${
-                  isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
+      {/* Moderation Filter Tabs & Sort Control */}
+      <div className="flex items-center justify-between gap-4 border-b border-gray-200 pb-3 flex-wrap">
+        <div className="flex items-center gap-2 overflow-x-auto">
+          {(['ALL', 'PENDING', 'APPROVED', 'HIDDEN'] as const).map((tab) => {
+            const isActive = activeTab === tab;
+            const labelMap = {
+              ALL: 'All',
+              PENDING: 'Pending Review',
+              APPROVED: 'Published',
+              HIDDEN: 'Hidden',
+            };
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shrink-0 ${
+                  isActive
+                    ? 'bg-vouchy-purple-600 text-white shadow-xs'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
-                {counts[tab]}
-              </span>
-            </button>
-          );
-        })}
+                <span>{labelMap[tab]}</span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] ${
+                    isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {counts[tab]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Sort Filter Selector */}
+        <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-xs ml-auto">
+          <span className="text-xs font-bold text-gray-500">Urutan:</span>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="bg-transparent text-xs font-extrabold text-gray-800 outline-none cursor-pointer"
+          >
+            <option value="newest">🕒 Terbaru (Newest First)</option>
+            <option value="oldest">⏳ Terlama (Oldest First)</option>
+            <option value="rating">⭐ Rating Tertinggi (Highest Rated)</option>
+          </select>
+        </div>
       </div>
 
       {/* Vouches Moderation List */}
-      {filteredVouches.length > 0 ? (
+      {sortedFilteredVouches.length > 0 ? (
         <div className="space-y-4">
-          {filteredVouches.map((vouch) => (
+          {sortedFilteredVouches.map((vouch) => (
             <div
               key={vouch.id}
               className="bg-white rounded-3xl p-5 border-2 border-vouchy-purple-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition hover:border-vouchy-purple-300"

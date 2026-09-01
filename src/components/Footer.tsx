@@ -22,14 +22,8 @@ export const Footer: React.FC = () => {
           <Link href="/discover" className="hover:text-vouchy-purple-600 transition">
             Explore
           </Link>
-          <Link href="/rajabi" className="hover:text-vouchy-purple-600 transition">
-            Demo Wall
-          </Link>
           <Link href="/dashboard" className="hover:text-vouchy-purple-600 transition">
             Dashboard
-          </Link>
-          <Link href="/login" className="hover:text-vouchy-purple-600 transition">
-            Log In
           </Link>
         </div>
 

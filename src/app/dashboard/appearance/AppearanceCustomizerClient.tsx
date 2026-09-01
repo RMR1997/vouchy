@@ -80,7 +80,7 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
       }
     } catch (err) {
       console.error('Failed to save appearance:', err);
-    } fontFinally: {
+    } finally {
       setSaving(false);
     }
   };
@@ -197,14 +197,25 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
           )}
         </div>
 
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="px-8 py-3.5 rounded-2xl bg-vouchy-purple-600 hover:bg-vouchy-purple-700 text-white font-extrabold text-sm shadow-md shadow-vouchy-purple-200 transition active:scale-95 disabled:opacity-50 flex items-center gap-2"
-        >
-          <Sparkles className="w-4 h-4 text-vouchy-yellow-200" />
-          <span>{saving ? 'Saving...' : 'Save Appearance ✨'}</span>
-        </button>
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-8 py-3.5 rounded-2xl bg-vouchy-purple-600 hover:bg-vouchy-purple-700 text-white font-extrabold text-sm shadow-md shadow-vouchy-purple-200 transition active:scale-95 disabled:opacity-50 flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4 text-vouchy-yellow-200" />
+            <span>{saving ? 'Saving...' : 'Save Appearance ✨'}</span>
+          </button>
+
+          <a
+            href={`/${user.username}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3.5 rounded-2xl bg-vouchy-purple-50 hover:bg-vouchy-purple-100 text-vouchy-purple-800 border border-vouchy-purple-200 font-extrabold text-sm transition flex items-center gap-2"
+          >
+            <span>👁️ Lihat Dinding Publik Live</span>
+          </a>
+        </div>
       </div>
 
       {/* Live Real-time Profile Wall Preview */}

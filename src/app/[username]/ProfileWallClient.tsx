@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { VouchCard } from '@/components/VouchCard';
 import { LeaveVouchModal } from '@/components/LeaveVouchModal';
-import { Sparkles, MessageCircle, Heart, Share2 } from 'lucide-react';
+import { Sparkles, MessageCircle, Heart, Share2, ArrowUpDown, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 interface Reaction {
@@ -39,10 +39,25 @@ export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [vouches, setVouches] = useState<Vouch[]>(initialVouches);
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'rating'>('newest');
 
-  const handleVouchSubmitted = async () => {
-    // Optionally refresh vouches list
+  const handleVouchSubmitted = () => {
+    setIsModalOpen(false);
   };
+
+  const sortedVouches = [...vouches].sort((a, b) => {
+    const timeA = new Date(a.createdAt).getTime();
+    const timeB = new Date(b.createdAt).getTime();
+
+    if (sortBy === 'oldest') {
+      return timeA - timeB;
+    }
+    if (sortBy === 'rating') {
+      return b.rating - a.rating;
+    }
+    // Default newest
+    return timeB - timeA;
+  });
 
   const getLayoutGridClass = () => {
     if (layout === 'clean') {
@@ -57,8 +72,8 @@ export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
 
   return (
     <div className="relative pb-24">
-      {/* Wall Header Title */}
-      <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+      {/* Wall Header Title & Sort Controls */}
+      <div className="flex items-center justify-between mb-8 gap-4 flex-wrap border-b border-black/5 pb-4">
         <div>
           <h2 className="text-2xl sm:text-3xl font-black text-gray-900 flex items-center gap-2">
             What people say about {profileName} 💬
@@ -68,20 +83,36 @@ export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
           </p>
         </div>
 
-        {/* Action Button */}
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-6 py-3 rounded-2xl bg-vouchy-purple-600 hover:bg-vouchy-purple-700 text-white font-extrabold text-sm shadow-playful-lg shadow-vouchy-purple-200 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-        >
-          <Sparkles className="w-4 h-4 text-vouchy-yellow-200" />
-          <span>Leave a Vouch ✨</span>
-        </button>
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* Sort Filter Selector */}
+          <div className="flex items-center gap-1.5 bg-white/90 px-3 py-2 rounded-2xl border border-gray-200 shadow-xs">
+            <ArrowUpDown className="w-3.5 h-3.5 text-vouchy-purple-600 shrink-0" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="bg-transparent text-xs font-bold text-gray-800 outline-none cursor-pointer"
+            >
+              <option value="newest">🕒 Terbaru (Newest First)</option>
+              <option value="oldest">⏳ Terlama (Oldest First)</option>
+              <option value="rating">⭐ Rating Tertinggi (Highest Rated)</option>
+            </select>
+          </div>
+
+          {/* Action Button */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-6 py-2.5 rounded-2xl bg-vouchy-purple-600 hover:bg-vouchy-purple-700 text-white font-extrabold text-xs shadow-playful-lg shadow-vouchy-purple-200 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4 text-vouchy-yellow-200" />
+            <span>Leave a Vouch ✨</span>
+          </button>
+        </div>
       </div>
 
       {/* Vouch Cards Wall */}
-      {vouches.length > 0 ? (
+      {sortedVouches.length > 0 ? (
         <div className={getLayoutGridClass()}>
-          {vouches.map((vouch, idx) => (
+          {sortedVouches.map((vouch, idx) => (
             <VouchCard
               key={vouch.id}
               id={vouch.id}

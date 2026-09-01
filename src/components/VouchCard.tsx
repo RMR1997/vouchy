@@ -138,9 +138,11 @@ export const VouchCard: React.FC<VouchCardProps> = ({
           </div>
 
           {/* Relationship Tag */}
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/60 text-gray-700 border border-black/5">
-            {relationship}
-          </span>
+          {relationship && (
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/60 text-gray-700 border border-black/5">
+              {relationship}
+            </span>
+          )}
         </div>
 
         {/* Message body */}
