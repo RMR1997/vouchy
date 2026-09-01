@@ -157,7 +157,7 @@ export default async function DashboardOverviewPage() {
 
         {approvedVouches.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {approvedVouches.slice(0, 2).map((vouch, idx) => (
+            {JSON.parse(JSON.stringify(approvedVouches.slice(0, 2))).map((vouch: any, idx: number) => (
               <VouchCard
                 key={vouch.id}
                 id={vouch.id}
@@ -167,8 +167,8 @@ export default async function DashboardOverviewPage() {
                 rating={vouch.rating}
                 relationship={vouch.relationship}
                 isAnonymous={vouch.isAnonymous}
-                createdAt={typeof vouch.createdAt === 'string' ? vouch.createdAt : vouch.createdAt.toISOString()}
-                reactions={JSON.parse(JSON.stringify(vouch.reactions))}
+                createdAt={vouch.createdAt}
+                reactions={vouch.reactions}
                 index={idx}
               />
             ))}
