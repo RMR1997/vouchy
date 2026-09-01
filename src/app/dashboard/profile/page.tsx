@@ -20,7 +20,7 @@ export default async function ProfileSettingsPage() {
         </p>
       </div>
 
-      <ProfileFormClient initialUser={user} />
+      <ProfileFormClient initialUser={JSON.parse(JSON.stringify(user))} />
     </div>
   );
 }

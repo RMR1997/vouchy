@@ -167,8 +167,8 @@ export default async function DashboardOverviewPage() {
                 rating={vouch.rating}
                 relationship={vouch.relationship}
                 isAnonymous={vouch.isAnonymous}
-                createdAt={vouch.createdAt}
-                reactions={vouch.reactions}
+                createdAt={typeof vouch.createdAt === 'string' ? vouch.createdAt : vouch.createdAt.toISOString()}
+                reactions={JSON.parse(JSON.stringify(vouch.reactions))}
                 index={idx}
               />
             ))}

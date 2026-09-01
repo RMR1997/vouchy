@@ -20,7 +20,7 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      <SettingsClient user={user} />
+      <SettingsClient user={JSON.parse(JSON.stringify(user))} />
     </div>
   );
 }

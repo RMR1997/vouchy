@@ -30,7 +30,10 @@ export default async function AppearancePage() {
         </p>
       </div>
 
-      <AppearanceCustomizerClient initialSettings={settings} user={user} />
+      <AppearanceCustomizerClient
+        initialSettings={JSON.parse(JSON.stringify(settings))}
+        user={JSON.parse(JSON.stringify(user))}
+      />
     </div>
   );
 }

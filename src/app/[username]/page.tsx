@@ -161,7 +161,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         <ProfileWallClient
           profileId={user.id}
           profileName={user.name}
-          initialVouches={user.vouches}
+          initialVouches={JSON.parse(JSON.stringify(user.vouches))}
           layout={layout}
         />
       </div>

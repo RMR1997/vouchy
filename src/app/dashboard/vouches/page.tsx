@@ -27,7 +27,7 @@ export default async function VouchesPage() {
         </p>
       </div>
 
-      <VouchManagementClient initialVouches={vouches} />
+      <VouchManagementClient initialVouches={JSON.parse(JSON.stringify(vouches))} />
     </div>
   );
 }
