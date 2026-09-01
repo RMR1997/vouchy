@@ -328,11 +328,11 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Upload Screenshot Chat / Proof Image */}
+                  {/* Upload Gambar (opsional) */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-                        Upload Screenshot Chat / Bukti 📸 <span className="text-gray-400 font-normal lowercase">(opsional)</span>
+                        Upload Gambar <span className="text-gray-400 font-normal lowercase">(opsional)</span>
                       </label>
                       {proofImage && (
                         <button
@@ -346,11 +346,11 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                     </div>
 
                     {proofImage ? (
-                      <div className="relative rounded-2xl overflow-hidden border-2 border-vouchy-purple-200 group max-h-40">
+                      <div className="relative rounded-2xl overflow-hidden border-2 border-vouchy-purple-200 group max-h-36">
                         <img
                           src={proofImage}
-                          alt="Screenshot proof"
-                          className="w-full h-40 object-cover rounded-2xl"
+                          alt="Proof attachment"
+                          className="w-full h-36 object-cover rounded-2xl"
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                           <button
@@ -363,7 +363,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <label className="flex flex-col items-center justify-center gap-1 p-3 rounded-2xl border-2 border-dashed border-gray-200 hover:border-vouchy-purple-400 bg-gray-50/70 hover:bg-vouchy-purple-50/50 transition cursor-pointer group">
+                      <label className="flex items-center gap-3 p-2.5 px-3.5 rounded-2xl border border-gray-200 hover:border-vouchy-purple-400 bg-gray-50/80 hover:bg-vouchy-purple-50/40 transition cursor-pointer group">
                         <input
                           type="file"
                           accept="image/*"
@@ -371,23 +371,25 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                           disabled={uploadingProof}
                           className="hidden"
                         />
-                        {uploadingProof ? (
-                          <span className="text-xs font-extrabold text-vouchy-purple-600 animate-pulse py-1">
-                            Mengunggah screenshot... ⏳
-                          </span>
-                        ) : (
-                          <>
-                            <div className="w-8 h-8 rounded-full bg-vouchy-purple-100 text-vouchy-purple-700 flex items-center justify-center font-bold text-sm group-hover:scale-110 transition">
-                              📷
-                            </div>
-                            <p className="text-xs font-bold text-gray-700">
-                              Klik di sini untuk upload screenshot chat
-                            </p>
-                            <p className="text-[10px] text-gray-400 font-medium">
-                              PNG, JPG, WEBP (Maksimal 5MB)
-                            </p>
-                          </>
-                        )}
+                        <div className="w-10 h-10 rounded-full bg-vouchy-purple-100 border border-vouchy-purple-200 text-vouchy-purple-700 flex items-center justify-center font-bold text-base group-hover:scale-105 group-hover:bg-vouchy-purple-200 transition shrink-0 shadow-xs">
+                          📷
+                        </div>
+                        <div className="flex flex-col">
+                          {uploadingProof ? (
+                            <span className="text-xs font-extrabold text-vouchy-purple-600 animate-pulse">
+                              Mengunggah gambar... ⏳
+                            </span>
+                          ) : (
+                            <>
+                              <span className="text-xs font-bold text-gray-800 group-hover:text-vouchy-purple-700 transition">
+                                Klik untuk pilih gambar
+                              </span>
+                              <span className="text-[11px] font-medium text-gray-400">
+                                PNG, JPG (Maksimal 5MB)
+                              </span>
+                            </>
+                          )}
+                        </div>
                       </label>
                     )}
                   </div>
