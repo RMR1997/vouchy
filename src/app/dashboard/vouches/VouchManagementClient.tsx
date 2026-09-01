@@ -18,6 +18,7 @@ interface Vouch {
   relationship?: string;
   isAnonymous: boolean;
   cardColor?: string | null;
+  proofImage?: string | null;
   status: string; // PENDING, APPROVED, HIDDEN
   createdAt: Date | string;
   reactions?: Reaction[];
@@ -171,6 +172,19 @@ export const VouchManagementClient: React.FC<VouchManagementClientProps> = ({
                 <p className="text-sm font-semibold text-gray-900 leading-relaxed">
                   "{vouch.message}"
                 </p>
+
+                {/* Screenshot Proof Thumbnail */}
+                {vouch.proofImage && (
+                  <div className="mt-2">
+                    <span className="text-[10px] font-bold text-gray-400 block mb-1">Bukti Screenshot Chat 📸:</span>
+                    <img
+                      src={vouch.proofImage}
+                      alt="Proof screenshot"
+                      className="w-32 h-20 object-cover rounded-xl border border-gray-200 cursor-pointer hover:opacity-90 transition"
+                      onClick={() => window.open(vouch.proofImage!, '_blank')}
+                    />
+                  </div>
+                )}
 
                 {/* Author info */}
                 <div className="flex items-center gap-2 text-xs text-gray-500 font-medium pt-1">

@@ -44,6 +44,7 @@ model Vouch {
   relationship String     @default("Friend") // Friend, Coworker, Client, Classmate, Family, Other
   isAnonymous  Boolean    @default(false)
   cardColor    String?
+  proofImage   String?
   status       String     @default("APPROVED") // PENDING, APPROVED, HIDDEN
   createdAt    DateTime   @default(now())
   approvedAt   DateTime?

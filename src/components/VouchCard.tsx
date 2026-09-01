@@ -20,6 +20,7 @@ interface VouchCardProps {
   isAnonymous: boolean;
   createdAt: Date | string;
   reactions?: Reaction[];
+  proofImage?: string | null;
   index?: number;
   rotationStyle?: string;
   colorStyle?: string;
@@ -51,6 +52,7 @@ export const VouchCard: React.FC<VouchCardProps> = ({
   isAnonymous,
   createdAt,
   reactions = [],
+  proofImage,
   index = 0,
   rotationStyle,
   colorStyle,
@@ -150,6 +152,21 @@ export const VouchCard: React.FC<VouchCardProps> = ({
         <p className="text-sm md:text-base font-medium leading-relaxed my-3 break-words whitespace-pre-line overflow-hidden max-w-full text-gray-900">
           "{message}"
         </p>
+
+        {/* Screenshot Proof Attachment */}
+        {proofImage && (
+          <div className="mt-3 rounded-2xl overflow-hidden border border-black/10 shadow-xs bg-black/5 relative group/proof">
+            <img
+              src={proofImage}
+              alt="Vouch screenshot proof"
+              className="w-full max-h-52 object-cover rounded-2xl cursor-pointer hover:scale-102 transition-transform duration-200"
+              onClick={() => window.open(proofImage, '_blank')}
+            />
+            <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full pointer-events-none flex items-center gap-1 shadow-sm">
+              <span>🔍 Klik untuk perbesar</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer: Author details & Reaction bar */}

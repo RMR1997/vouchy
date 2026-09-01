@@ -21,6 +21,7 @@ interface Vouch {
   relationship?: string;
   isAnonymous: boolean;
   cardColor?: string | null;
+  proofImage?: string | null;
   createdAt: Date | string;
   reactions?: Reaction[];
 }
@@ -125,6 +126,7 @@ export const ProfileWallClient: React.FC<ProfileWallClientProps> = ({
               createdAt={vouch.createdAt}
               reactions={vouch.reactions}
               colorStyle={vouch.cardColor || undefined}
+              proofImage={vouch.proofImage}
               index={idx}
             />
           ))}

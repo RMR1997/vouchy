@@ -169,6 +169,7 @@ export default async function DashboardOverviewPage() {
                 createdAt={vouch.createdAt}
                 reactions={vouch.reactions}
                 colorStyle={vouch.cardColor || undefined}
+                proofImage={vouch.proofImage}
                 index={idx}
               />
             ))}

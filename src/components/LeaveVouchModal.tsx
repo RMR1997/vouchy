@@ -44,7 +44,6 @@ const VOUCH_CARD_COLORS = [
   { id: 'bg-[#F7FEE7] border-[#D9F99D] text-[#3F6212]', name: 'Matcha', emoji: '🍵', previewBg: '#F7FEE7', previewBorder: '#D9F99D' },
   { id: 'bg-[#FDF4FF] border-[#F5D0FE] text-[#701A75]', name: 'Plum', emoji: '🍇', previewBg: '#FDF4FF', previewBorder: '#F5D0FE' },
   { id: 'bg-[#FAF8F5] border-[#E5E7EB] text-[#111827]', name: 'Cream', emoji: '🍦', previewBg: '#FAF8F5', previewBorder: '#E5E7EB' },
-  { id: 'bg-[#18181B] border-[#3F3F46] text-[#FAFAFA]', name: 'Dark', emoji: '🖤', previewBg: '#18181B', previewBorder: '#3F3F46' },
   { id: 'bg-[#FFFFFF] border-[#E5E7EB] text-[#111827]', name: 'White', emoji: '🤍', previewBg: '#FFFFFF', previewBorder: '#E5E7EB' },
 ];
 
@@ -61,9 +60,35 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
   const [relationship, setRelationship] = useState('Friend');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [cardColor, setCardColor] = useState(VOUCH_CARD_COLORS[0].id);
+  const [proofImage, setProofImage] = useState<string | null>(null);
+  const [uploadingProof, setUploadingProof] = useState(false);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingProof(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setProofImage(data.url);
+      }
+    } catch (err) {
+      console.error('Failed to upload proof image:', err);
+    } finally {
+      setUploadingProof(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +110,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
           relationship,
           isAnonymous,
           cardColor,
+          proofImage,
         }),
       });
 
@@ -112,6 +138,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
     setMessage('');
     setAuthorName('');
     setRating(5);
+    setProofImage(null);
     onClose();
   };
 
@@ -299,6 +326,70 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                         );
                       })}
                     </div>
+                  </div>
+
+                  {/* Upload Screenshot Chat / Proof Image */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Upload Screenshot Chat / Bukti 📸 <span className="text-gray-400 font-normal lowercase">(opsional)</span>
+                      </label>
+                      {proofImage && (
+                        <button
+                          type="button"
+                          onClick={() => setProofImage(null)}
+                          className="text-[11px] font-extrabold text-rose-500 hover:underline"
+                        >
+                          Hapus Foto ✕
+                        </button>
+                      )}
+                    </div>
+
+                    {proofImage ? (
+                      <div className="relative rounded-2xl overflow-hidden border-2 border-vouchy-purple-200 group max-h-40">
+                        <img
+                          src={proofImage}
+                          alt="Screenshot proof"
+                          className="w-full h-40 object-cover rounded-2xl"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setProofImage(null)}
+                            className="px-3.5 py-1.5 rounded-xl bg-rose-600 text-white font-extrabold text-xs shadow-md"
+                          >
+                            Hapus Gambar ✕
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center gap-1 p-3 rounded-2xl border-2 border-dashed border-gray-200 hover:border-vouchy-purple-400 bg-gray-50/70 hover:bg-vouchy-purple-50/50 transition cursor-pointer group">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          disabled={uploadingProof}
+                          className="hidden"
+                        />
+                        {uploadingProof ? (
+                          <span className="text-xs font-extrabold text-vouchy-purple-600 animate-pulse py-1">
+                            Mengunggah screenshot... ⏳
+                          </span>
+                        ) : (
+                          <>
+                            <div className="w-8 h-8 rounded-full bg-vouchy-purple-100 text-vouchy-purple-700 flex items-center justify-center font-bold text-sm group-hover:scale-110 transition">
+                              📷
+                            </div>
+                            <p className="text-xs font-bold text-gray-700">
+                              Klik di sini untuk upload screenshot chat
+                            </p>
+                            <p className="text-[10px] text-gray-400 font-medium">
+                              PNG, JPG, WEBP (Maksimal 5MB)
+                            </p>
+                          </>
+                        )}
+                      </label>
+                    )}
                   </div>
 
                   {/* Submit CTA */}
