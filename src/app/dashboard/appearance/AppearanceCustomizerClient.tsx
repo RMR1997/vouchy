@@ -303,7 +303,7 @@ export const AppearanceCustomizerClient: React.FC<AppearanceCustomizerClientProp
               rating={5}
               isAnonymous={false}
               createdAt={new Date()}
-              reactions={[{ id: 'r1', type: 'PURPLE_HEART' }, { id: 'r2', type: 'ROCKET' }]}
+              reactions={[{ id: 'r1', type: 'HEART' }, { id: 'r2', type: 'FLOWER' }, { id: 'r3', type: 'STRAWBERRY' }]}
             />
           </div>
         </PatternBackground>

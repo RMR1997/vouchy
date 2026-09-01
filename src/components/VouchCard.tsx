@@ -28,10 +28,17 @@ interface VouchCardProps {
 
 const EMOJI_MAP: Record<string, string> = {
   HEART: '❤️',
-  LAUGH: '😂',
-  ROCKET: '🚀',
-  PURPLE_HEART: '💜',
-  CLAP: '👏',
+  FLOWER: '🌸',
+  RABBIT: '🐰',
+  STRAWBERRY: '🍓',
+  BLUEBERRY: '🫐',
+};
+
+const LEGACY_TYPE_MAP: Record<string, string> = {
+  PURPLE_HEART: 'HEART',
+  LAUGH: 'FLOWER',
+  ROCKET: 'BLUEBERRY',
+  CLAP: 'STRAWBERRY',
 };
 
 export const VouchCard: React.FC<VouchCardProps> = ({
@@ -54,7 +61,8 @@ export const VouchCard: React.FC<VouchCardProps> = ({
 
   // Group reaction counts
   const initialCounts = reactions.reduce((acc, r) => {
-    acc[r.type] = (acc[r.type] || 0) + 1;
+    const key = EMOJI_MAP[r.type] ? r.type : (LEGACY_TYPE_MAP[r.type] || 'HEART');
+    acc[key] = (acc[key] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
