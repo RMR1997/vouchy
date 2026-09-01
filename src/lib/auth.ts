@@ -5,22 +5,27 @@ import bcrypt from 'bcryptjs';
 const SESSION_COOKIE = 'vouchy_user_id';
 
 export async function getCurrentUser() {
-  const cookieStore = cookies();
-  const userId = cookieStore.get(SESSION_COOKIE)?.value;
+  try {
+    const cookieStore = cookies();
+    const userId = cookieStore.get(SESSION_COOKIE)?.value;
 
-  if (!userId) {
+    if (!userId) {
+      return null;
+    }
+
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      include: {
+        socialLinks: true,
+        settings: true,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    console.error('Error fetching current user:', error);
     return null;
   }
-
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    include: {
-      socialLinks: true,
-      settings: true,
-    },
-  });
-
-  return user;
 }
 
 export async function setSessionUser(userId: string) {
