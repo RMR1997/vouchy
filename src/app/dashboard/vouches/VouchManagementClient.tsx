@@ -17,6 +17,7 @@ interface Vouch {
   rating: number;
   relationship?: string;
   isAnonymous: boolean;
+  cardColor?: string | null;
   status: string; // PENDING, APPROVED, HIDDEN
   createdAt: Date | string;
   reactions?: Reaction[];

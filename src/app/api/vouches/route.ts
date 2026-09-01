@@ -43,7 +43,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { profileId, authorName, authorAvatar, message, rating, relationship, isAnonymous } = body;
+    const { profileId, authorName, authorAvatar, message, rating, relationship, isAnonymous, cardColor } = body;
 
     if (!profileId || !authorName || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -58,6 +58,7 @@ export async function POST(request: Request) {
         rating: Number(rating) || 5,
         relationship: relationship || 'Friend',
         isAnonymous: Boolean(isAnonymous),
+        cardColor: cardColor || null,
         status: 'PENDING', // Default moderation status
       },
     });

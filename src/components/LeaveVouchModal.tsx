@@ -31,6 +31,16 @@ const PRESET_AVATARS = [
   '/Avatar%20Vouchy/dudu%207.jpg',
 ];
 
+const VOUCH_CARD_COLORS = [
+  { id: 'bg-[#FDF2F8] border-[#FBCFE8] text-[#831843]', label: 'Pink 🎀', colorClass: 'bg-pink-100 border-pink-300 text-pink-900' },
+  { id: 'bg-[#FFF1F2] border-[#FECDD3] text-[#881337]', label: 'Rose 🌸', colorClass: 'bg-rose-100 border-rose-300 text-rose-900' },
+  { id: 'bg-[#FAF5FF] border-[#E9D5FF] text-[#581C87]', label: 'Lavender 💜', colorClass: 'bg-purple-100 border-purple-300 text-purple-900' },
+  { id: 'bg-[#F0F9FF] border-[#BAE6FD] text-[#0C4A6E]', label: 'Sky ☁️', colorClass: 'bg-sky-100 border-sky-300 text-sky-900' },
+  { id: 'bg-[#F0FDF4] border-[#A7F3D0] text-[#064E3B]', label: 'Mint 🌿', colorClass: 'bg-emerald-100 border-emerald-300 text-emerald-900' },
+  { id: 'bg-[#FEFCE8] border-[#FEF08A] text-[#713F12]', label: 'Sunshine ☀️', colorClass: 'bg-amber-100 border-amber-300 text-amber-900' },
+  { id: 'bg-[#FAF8F5] border-[#E5E7EB] text-[#111827]', label: 'Cream 🍦', colorClass: 'bg-stone-100 border-stone-300 text-stone-900' },
+];
+
 export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
   isOpen,
   onClose,
@@ -43,6 +53,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
   const [selectedAvatar, setSelectedAvatar] = useState(PRESET_AVATARS[0]);
   const [relationship, setRelationship] = useState('Friend');
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [cardColor, setCardColor] = useState(VOUCH_CARD_COLORS[0].id);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -66,6 +77,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
           rating,
           relationship,
           isAnonymous,
+          cardColor,
         }),
       });
 
@@ -227,6 +239,29 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                   )}
 
 
+
+                  {/* Vouch Card Box Color Selection */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                      Pilih Warna Kotak Vouch 🎨
+                    </label>
+                    <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5">
+                      {VOUCH_CARD_COLORS.map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => setCardColor(c.id)}
+                          className={`py-2 px-1 rounded-xl border text-[11px] font-extrabold transition text-center ${c.colorClass} ${
+                            cardColor === c.id
+                              ? 'ring-3 ring-vouchy-purple-500 scale-105 shadow-sm border-vouchy-purple-600'
+                              : 'opacity-75 hover:opacity-100'
+                          }`}
+                        >
+                          {c.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
                   {/* Message field */}
                   <div>

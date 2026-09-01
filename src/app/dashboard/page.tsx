@@ -168,6 +168,7 @@ export default async function DashboardOverviewPage() {
                 isAnonymous={vouch.isAnonymous}
                 createdAt={vouch.createdAt}
                 reactions={vouch.reactions}
+                colorStyle={vouch.cardColor || undefined}
                 index={idx}
               />
             ))}
