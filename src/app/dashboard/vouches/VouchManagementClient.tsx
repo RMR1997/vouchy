@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Star, CheckCircle, EyeOff, Trash2, Clock, Check, ShieldAlert } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 
