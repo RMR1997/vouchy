@@ -11,12 +11,16 @@ function createPrismaClient() {
   const tursoAuthToken = process.env.TURSO_AUTH_TOKEN;
 
   if (tursoUrl && tursoAuthToken) {
-    const libsql = createClient({
-      url: tursoUrl.replace(/^libsql:/, 'https:'),
-      authToken: tursoAuthToken,
-    });
-    const adapter = new PrismaLibSql(libsql as any);
-    return new PrismaClient({ adapter: adapter as any });
+    try {
+      const libsql = createClient({
+        url: tursoUrl.replace(/^libsql:/, 'https:'),
+        authToken: tursoAuthToken,
+      });
+      const adapter = new PrismaLibSql(libsql);
+      return new PrismaClient({ adapter: adapter as any });
+    } catch (err) {
+      console.error('Failed to initialize Turso LibSQL adapter:', err);
+    }
   }
 
   return new PrismaClient({
