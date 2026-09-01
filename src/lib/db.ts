@@ -33,6 +33,7 @@ function createPrismaClient() {
                 if (c === 'isAnonymous') return Boolean(val);
                 if (typeof val === 'number') return val;
                 if (typeof val === 'boolean') return val;
+                if (typeof val === 'bigint') return Number(val);
                 if (['createdAt', 'updatedAt', 'approvedAt'].includes(c) && typeof val === 'string') {
                   return new Date(val.includes('T') ? val : val.replace(' ', 'T') + 'Z').toISOString();
                 }
@@ -44,7 +45,8 @@ function createPrismaClient() {
               value: {
                 columnNames: res.columns,
                 columnTypes: res.columns.map((c: string) => {
-                  if (['rating', 'count'].includes(c.toLowerCase())) return 0; // Int32
+                  const name = c.toLowerCase();
+                  if (name.includes('count') || name.includes('rating') || name.includes('aggr')) return 0; // Int32
                   if (c === 'isAnonymous') return 5; // Boolean
                   if (['createdAt', 'updatedAt', 'approvedAt'].includes(c)) return 10; // DateTime
                   return 7; // Text
