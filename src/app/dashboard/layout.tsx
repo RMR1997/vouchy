@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { DashboardSidebarNav } from './DashboardSidebarNav';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardLayout({
   children,
 }: {

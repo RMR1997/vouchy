@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Star, Mail, Heart, Eye, ArrowRight, CheckCircle, Clock } from 'lucide-react';
 import { VouchCard } from '@/components/VouchCard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardOverviewPage() {
   const user = await getCurrentUser();
 

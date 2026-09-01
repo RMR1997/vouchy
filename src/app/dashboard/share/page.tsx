@@ -2,6 +2,8 @@ import React from 'react';
 import { getCurrentUser } from '@/lib/auth';
 import { SharePageClient } from './SharePageClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SharePage() {
   const user = await getCurrentUser();
 

@@ -3,6 +3,8 @@ import { getCurrentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { VouchManagementClient } from './VouchManagementClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function VouchesPage() {
   const user = await getCurrentUser();
 

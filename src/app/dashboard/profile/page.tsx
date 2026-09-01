@@ -2,6 +2,8 @@ import React from 'react';
 import { getCurrentUser } from '@/lib/auth';
 import { ProfileFormClient } from './ProfileFormClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProfileSettingsPage() {
   const user = await getCurrentUser();
 
