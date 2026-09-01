@@ -29,14 +29,16 @@ export async function PUT(request: Request) {
     // Update social links if provided
     if (socialLinks && Array.isArray(socialLinks)) {
       await db.socialLink.deleteMany({ where: { userId: user.id } });
-      if (socialLinks.length > 0) {
-        await db.socialLink.createMany({
-          data: socialLinks.map((link: any) => ({
-            userId: user.id,
-            platform: link.platform,
-            url: link.url,
-          })),
-        });
+      for (const link of socialLinks) {
+        if (link.url && typeof link.url === 'string' && link.url.trim() !== '') {
+          await db.socialLink.create({
+            data: {
+              userId: user.id,
+              platform: link.platform,
+              url: link.url.trim(),
+            },
+          });
+        }
       }
     }
 
