@@ -235,7 +235,7 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                         <input
                           type="text"
                           required={!isAnonymous}
-                          placeholder="e.g. Andi Pratama"
+                          placeholder="e.g. haydaycici"
                           value={authorName}
                           onChange={(e) => setAuthorName(e.target.value)}
                           className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-vouchy-purple-500 focus:ring-2 focus:ring-vouchy-purple-200 outline-none transition font-medium"

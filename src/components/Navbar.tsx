@@ -73,9 +73,6 @@ export const Navbar: React.FC = () => {
             <Compass className="w-4 h-4 text-vouchy-purple-500" />
             Explore Vouchies
           </Link>
-          <Link href="/rajabi" className="flex items-center gap-1 hover:text-vouchy-purple-600 transition">
-            <span>Demo Wall (@rajabi)</span>
-          </Link>
           <Link href="/dashboard" className="flex items-center gap-1.5 hover:text-vouchy-purple-600 transition">
             <LayoutDashboard className="w-4 h-4 text-vouchy-purple-500" />
             Dashboard
@@ -156,13 +153,6 @@ export const Navbar: React.FC = () => {
             className="block py-2 text-base font-bold text-gray-800 hover:text-vouchy-purple-600"
           >
             Explore Vouchies ✨
-          </Link>
-          <Link
-            href="/rajabi"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-base font-bold text-gray-800 hover:text-vouchy-purple-600"
-          >
-            View Demo Profile (@rajabi)
           </Link>
           <Link
             href="/dashboard"
