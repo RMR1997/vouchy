@@ -32,13 +32,20 @@ const PRESET_AVATARS = [
 ];
 
 const VOUCH_CARD_COLORS = [
-  { id: 'bg-[#FDF2F8] border-[#FBCFE8] text-[#831843]', label: 'Pink 🎀', colorClass: 'bg-pink-100 border-pink-300 text-pink-900' },
-  { id: 'bg-[#FFF1F2] border-[#FECDD3] text-[#881337]', label: 'Rose 🌸', colorClass: 'bg-rose-100 border-rose-300 text-rose-900' },
-  { id: 'bg-[#FAF5FF] border-[#E9D5FF] text-[#581C87]', label: 'Lavender 💜', colorClass: 'bg-purple-100 border-purple-300 text-purple-900' },
-  { id: 'bg-[#F0F9FF] border-[#BAE6FD] text-[#0C4A6E]', label: 'Sky ☁️', colorClass: 'bg-sky-100 border-sky-300 text-sky-900' },
-  { id: 'bg-[#F0FDF4] border-[#A7F3D0] text-[#064E3B]', label: 'Mint 🌿', colorClass: 'bg-emerald-100 border-emerald-300 text-emerald-900' },
-  { id: 'bg-[#FEFCE8] border-[#FEF08A] text-[#713F12]', label: 'Sunshine ☀️', colorClass: 'bg-amber-100 border-amber-300 text-amber-900' },
-  { id: 'bg-[#FAF8F5] border-[#E5E7EB] text-[#111827]', label: 'Cream 🍦', colorClass: 'bg-stone-100 border-stone-300 text-stone-900' },
+  { id: 'bg-[#FDF2F8] border-[#FBCFE8] text-[#831843]', name: 'Pink', emoji: '🎀', previewBg: '#FDF2F8', previewBorder: '#FBCFE8' },
+  { id: 'bg-[#FFF1F2] border-[#FECDD3] text-[#881337]', name: 'Rose', emoji: '🌸', previewBg: '#FFF1F2', previewBorder: '#FECDD3' },
+  { id: 'bg-[#FAF5FF] border-[#E9D5FF] text-[#581C87]', name: 'Lavender', emoji: '💜', previewBg: '#FAF5FF', previewBorder: '#E9D5FF' },
+  { id: 'bg-[#F0F9FF] border-[#BAE6FD] text-[#0C4A6E]', name: 'Sky', emoji: '☁️', previewBg: '#F0F9FF', previewBorder: '#BAE6FD' },
+  { id: 'bg-[#F0FDF4] border-[#A7F3D0] text-[#064E3B]', name: 'Mint', emoji: '🌿', previewBg: '#F0FDF4', previewBorder: '#A7F3D0' },
+  { id: 'bg-[#FEFCE8] border-[#FEF08A] text-[#713F12]', name: 'Sunshine', emoji: '☀️', previewBg: '#FEFCE8', previewBorder: '#FEF08A' },
+  { id: 'bg-[#FFF7ED] border-[#FFEDD5] text-[#9A3412]', name: 'Peach', emoji: '🍑', previewBg: '#FFF7ED', previewBorder: '#FFEDD5' },
+  { id: 'bg-[#ECFEFF] border-[#A5F3FC] text-[#155E75]', name: 'Ocean', emoji: '🌊', previewBg: '#ECFEFF', previewBorder: '#A5F3FC' },
+  { id: 'bg-[#EEF2FF] border-[#C7D2FE] text-[#3730A3]', name: 'Indigo', emoji: '🫐', previewBg: '#EEF2FF', previewBorder: '#C7D2FE' },
+  { id: 'bg-[#F7FEE7] border-[#D9F99D] text-[#3F6212]', name: 'Matcha', emoji: '🍵', previewBg: '#F7FEE7', previewBorder: '#D9F99D' },
+  { id: 'bg-[#FDF4FF] border-[#F5D0FE] text-[#701A75]', name: 'Plum', emoji: '🍇', previewBg: '#FDF4FF', previewBorder: '#F5D0FE' },
+  { id: 'bg-[#FAF8F5] border-[#E5E7EB] text-[#111827]', name: 'Cream', emoji: '🍦', previewBg: '#FAF8F5', previewBorder: '#E5E7EB' },
+  { id: 'bg-[#18181B] border-[#3F3F46] text-[#FAFAFA]', name: 'Dark', emoji: '🖤', previewBg: '#18181B', previewBorder: '#3F3F46' },
+  { id: 'bg-[#FFFFFF] border-[#E5E7EB] text-[#111827]', name: 'White', emoji: '🤍', previewBg: '#FFFFFF', previewBorder: '#E5E7EB' },
 ];
 
 export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
@@ -240,29 +247,6 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
 
 
 
-                  {/* Vouch Card Box Color Selection */}
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                      Pilih Warna Kotak Vouch 🎨
-                    </label>
-                    <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5">
-                      {VOUCH_CARD_COLORS.map((c) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          onClick={() => setCardColor(c.id)}
-                          className={`py-2 px-1 rounded-xl border text-[11px] font-extrabold transition text-center ${c.colorClass} ${
-                            cardColor === c.id
-                              ? 'ring-3 ring-vouchy-purple-500 scale-105 shadow-sm border-vouchy-purple-600'
-                              : 'opacity-75 hover:opacity-100'
-                          }`}
-                        >
-                          {c.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Message field */}
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
@@ -280,6 +264,41 @@ export const LeaveVouchModal: React.FC<LeaveVouchModalProps> = ({
                     <p className="text-right text-xs text-gray-400 mt-1">
                       {message.length}/500
                     </p>
+                  </div>
+
+                  {/* Vouch Card Box Color Selection (Compact & Below Message Field) */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Pilih Warna Kotak Vouch 🎨
+                      </label>
+                      <span className="text-[11px] font-black text-vouchy-purple-700 bg-vouchy-purple-50 px-2.5 py-0.5 rounded-full border border-vouchy-purple-100 flex items-center gap-1">
+                        <span>{VOUCH_CARD_COLORS.find((c) => c.id === cardColor)?.emoji}</span>
+                        <span>{VOUCH_CARD_COLORS.find((c) => c.id === cardColor)?.name}</span>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                      {VOUCH_CARD_COLORS.map((c) => {
+                        const isSelected = cardColor === c.id;
+                        return (
+                          <button
+                            key={c.id}
+                            type="button"
+                            onClick={() => setCardColor(c.id)}
+                            title={`${c.name} ${c.emoji}`}
+                            style={{ backgroundColor: c.previewBg, borderColor: c.previewBorder }}
+                            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 transition-all flex items-center justify-center text-xs shrink-0 ${
+                              isSelected
+                                ? 'ring-3 ring-vouchy-purple-600 scale-110 shadow-md z-10'
+                                : 'opacity-85 hover:opacity-100 hover:scale-105'
+                            }`}
+                          >
+                            {isSelected && <span className="text-[10px] font-black text-gray-900 drop-shadow-xs">✓</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
                   {/* Submit CTA */}
