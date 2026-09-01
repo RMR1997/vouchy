@@ -5,6 +5,19 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+function safeIsoDate(val: any): string {
+  if (!val) return new Date().toISOString();
+  try {
+    const s = String(val);
+    const formatted = s.includes('T') ? s : s.replace(' ', 'T') + 'Z';
+    const d = new Date(formatted);
+    if (isNaN(d.getTime())) return new Date().toISOString();
+    return d.toISOString();
+  } catch {
+    return new Date().toISOString();
+  }
+}
+
 function createPrismaClient() {
   const tursoUrl = process.env.TURSO_DATABASE_URL;
   const tursoAuthToken = process.env.TURSO_AUTH_TOKEN;
@@ -27,15 +40,15 @@ function createPrismaClient() {
             });
             const res = await client.execute({ sql: query.sql, args });
             const rows = res.rows.map((r: any) =>
-              res.columns.map((c: string) => {
-                const val = r[c];
+              res.columns.map((c: string, colIdx: number) => {
+                const val = r[c] !== undefined ? r[c] : r[colIdx];
                 if (val === null || val === undefined) return null;
                 if (c === 'isAnonymous') return Boolean(val);
                 if (typeof val === 'number') return val;
                 if (typeof val === 'boolean') return val;
                 if (typeof val === 'bigint') return Number(val);
-                if (['createdAt', 'updatedAt', 'approvedAt'].includes(c) && typeof val === 'string') {
-                  return new Date(val.includes('T') ? val : val.replace(' ', 'T') + 'Z').toISOString();
+                if (['createdAt', 'updatedAt', 'approvedAt'].includes(c)) {
+                  return safeIsoDate(val);
                 }
                 return String(val);
               })
