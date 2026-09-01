@@ -12,11 +12,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Username/email and password required' }, { status: 400 });
     }
 
+    const cleanInput = usernameOrEmail.trim().toLowerCase();
+
     const user = await db.user.findFirst({
       where: {
         OR: [
-          { username: usernameOrEmail.toLowerCase() },
-          { email: usernameOrEmail.toLowerCase() },
+          { username: cleanInput },
+          { email: cleanInput },
         ],
       },
     });
