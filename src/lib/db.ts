@@ -15,7 +15,7 @@ function createPrismaClient() {
       url: tursoUrl.replace(/^libsql:/, 'https:'),
       authToken: tursoAuthToken,
     });
-    const adapter = new PrismaLibSql(libsql);
+    const adapter = new PrismaLibSql(libsql as any);
     return new PrismaClient({ adapter: adapter as any });
   }
 
