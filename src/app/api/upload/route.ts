@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
@@ -23,21 +23,9 @@ export async function POST(request: Request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const base64Image = `data:${file.type};base64,${buffer.toString('base64')}`;
 
-    // Ensure uploads directory exists
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadsDir, { recursive: true });
-
-    // Generate unique filename
-    const ext = path.extname(file.name) || '.jpg';
-    const fileName = `avatar-${Date.now()}-${Math.random().toString(36).substring(2, 8)}${ext}`;
-    const filePath = path.join(uploadsDir, fileName);
-
-    await writeFile(filePath, buffer);
-
-    const publicUrl = `/uploads/${fileName}`;
-
-    return NextResponse.json({ success: true, url: publicUrl });
+    return NextResponse.json({ success: true, url: base64Image });
   } catch (error) {
     console.error('File upload error:', error);
     return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
