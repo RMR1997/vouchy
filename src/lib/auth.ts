@@ -6,7 +6,7 @@ const SESSION_COOKIE = 'vouchy_user_id';
 
 export async function getCurrentUser() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const userId = cookieStore.get(SESSION_COOKIE)?.value;
 
     if (!userId) {
@@ -29,7 +29,7 @@ export async function getCurrentUser() {
 }
 
 export async function setSessionUser(userId: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, userId, {
     httpOnly: true,
     path: '/',
@@ -38,7 +38,7 @@ export async function setSessionUser(userId: string) {
 }
 
 export async function clearSessionUser() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
 }
 
